@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Render artifacts / temp
+._render.html
+/out/
+/output/
+*.local.html
+
+# OS
+.DS_Store
+Thumbs.db

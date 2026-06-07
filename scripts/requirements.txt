@@ -1,0 +1,13 @@
+# Project Radar render bağımlılıkları
+jinja2>=3.1
+markupsafe>=2.1
+
+# Varsayılan çıktı HTML'dir ve yalnızca yukarıdaki iki paketi gerektirir.
+
+# PDF (opsiyonel) gerekiyorsa Playwright + Chromium:
+#   pip install playwright && playwright install chromium
+# playwright>=1.40
+#
+# Alternatif PDF yedeği wkhtmltopdf (sistem paketi):
+#   macOS:  brew install --cask wkhtmltopdf
+#   Debian: apt-get install -y wkhtmltopdf

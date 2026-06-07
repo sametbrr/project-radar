@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Radar · {{ date_human }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Single font: Inter (Google Fonts, SIL OFL). Not bundled — loads from CDN,
+     falls back to a system sans if offline. */
+
+  :root{
+    --brand-primary:#a9b689;   /* sage-green  */
+    --brand-secondary:#bed0e3;  /* mist-blue   */
+    --brand-accent:#96aed1;    /* mist-blue dk */
+    --accent-red:#e4bdbd;
+    --accent-orange:#e6c0a3;
+    --accent-yellow:#d8cb8e;
+    --accent-purple:#dfceea;
+    --accent-pink:#e2bfce;
+    --text-primary:#181a1b;
+    --text-secondary:#27292a;
+    --bg:#f5f5f5;
+    --surface:#fafafa;
+    --muted:#6b6f70;
+    --line:#e4e4e1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Inter",sans-serif;
+    background:var(--bg);
+    color:var(--text-primary);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    position:relative;
+  }
+  /* grain + soft mesh atmosphere — absolute so it covers the full tall PDF page */
+  .atmos{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60% 30% at 12% 0%, rgba(169,182,137,.30), transparent 60%),
+      radial-gradient(55% 26% at 95% 1%, rgba(150,174,209,.28), transparent 60%),
+      radial-gradient(40% 22% at 80% 100%, rgba(223,206,234,.25), transparent 60%);
+  }
+  .grain{
+    position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:clamp(28px,5vw,72px) clamp(18px,4vw,48px) 80px}
+
+  /* ---------- header ---------- */
+  header{margin-bottom:38px}
+  .eyebrow{
+    font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--brand-accent);font-weight:500;
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--brand-accent)}
+  h1{
+    font-family:"Inter",sans-serif;font-weight:600;letter-spacing:-.02em;
+    font-size:clamp(40px,7vw,76px);line-height:.98;color:var(--text-primary);
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--brand-primary)}
+  .sub{margin-top:16px;max-width:660px;color:var(--text-secondary);font-size:16.5px}
+  .sub b{font-weight:600}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:16px;font-family:"Inter",sans-serif;
+    font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .legend-lbl{color:var(--text-secondary);font-weight:500;margin-right:4px}
+
+  /* ---------- section ---------- */
+  .section{margin-top:46px}
+  .section.first{margin-top:30px}
+  .shead{display:flex;align-items:baseline;gap:14px;padding-top:22px;border-top:1px solid var(--line);
+    flex-wrap:wrap}
+  .skicker{font-family:"Inter",sans-serif;font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--brand-accent);font-weight:500}
+  .stitle{font-family:"Inter",sans-serif;font-size:28px;font-weight:600;letter-spacing:-.01em;color:var(--text-primary);line-height:1.05}
+  .scount{margin-left:auto;font-family:"Inter",sans-serif;font-size:12.5px;color:var(--muted)}
+  .scount b{color:var(--text-primary)}
+  .sdesc{margin-top:8px;color:var(--muted);font-size:14px;max-width:680px}
+
+  /* ---------- summary block ---------- */
+  .summary{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:18px;
+    padding:22px 26px;position:relative;overflow:hidden}
+  .summary::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand-primary)}
+  .summary ol{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:11px}
+  .summary li{counter-increment:s;display:flex;gap:13px;color:var(--text-secondary);font-size:15px;line-height:1.55}
+  .summary li::before{content:counter(s);font-family:"Inter",sans-serif;font-weight:700;font-size:14px;
+    color:var(--brand-accent);flex:none;width:22px;height:22px;border-radius:7px;background:rgba(150,174,209,.16);
+    display:grid;place-items:center;margin-top:2px}
+
+  /* ---------- grid ---------- */
+  .grid{margin-top:22px;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
+  @media(max-width:480px){.grid{grid-template-columns:1fr}}
+
+  /* ---------- card (shared chrome) ---------- */
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:18px;
+    padding:24px 24px 20px;display:flex;flex-direction:column;
+    position:relative;overflow:hidden;break-inside:avoid;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,border-color .28s ease;
+    opacity:0;transform:translateY(14px);animation:rise .55s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:none}}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--cardaccent,var(--brand-primary));opacity:0;transition:opacity .28s ease}
+  .card:hover{transform:translateY(-5px);box-shadow:0 18px 42px -22px rgba(24,26,27,.32);border-color:#d6d6d2}
+  .card:hover::before{opacity:1}
+
+  .chead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .rank{font-family:"Inter",sans-serif;font-size:13px;font-weight:600;color:var(--muted);width:34px;flex:none;padding-top:3px}
+  .ctitle{min-width:0;flex:1}
+  .owner{font-family:"Inter",sans-serif;font-size:12.5px;color:var(--muted);font-weight:500}
+  .repo{font-family:"Inter",sans-serif;font-size:24px;font-weight:600;letter-spacing:-.01em;
+    color:var(--text-primary);line-height:1.1;margin-top:1px;word-break:break-word}
+  .link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+    font-family:"Inter",sans-serif;font-size:12px;color:var(--brand-accent);
+    text-decoration:none;border-bottom:1px solid transparent;transition:.18s ease;padding-bottom:1px}
+  .link:hover{color:var(--text-primary);border-bottom-color:var(--text-primary)}
+  .link svg{width:11px;height:11px;flex:none}
+
+  /* score badge */
+  .score{flex:none;text-align:center;border-radius:14px;padding:8px 12px;min-width:62px;
+    border:1px solid rgba(24,26,27,.08);background:var(--scorebg,var(--accent-yellow))}
+  .score .num{font-family:"Inter",sans-serif;font-weight:700;font-size:24px;line-height:1;color:var(--text-primary)}
+  .score .num small{font-size:12px;font-weight:500;color:var(--text-secondary);opacity:.7}
+  .score .cap{font-family:"Inter",sans-serif;font-size:8.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--text-secondary);opacity:.75;margin-top:4px}
+
+  /* body */
+  .desc{margin-top:16px;color:var(--text-secondary);font-size:14.5px;line-height:1.62;flex:1}
+  .note{display:block;margin-top:9px;font-size:12.5px;color:var(--muted);font-style:italic}
+
+  /* footer meta (trending cards) */
+  .meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin-top:18px;padding-top:14px;
+    border-top:1px solid var(--line);font-family:"Inter",sans-serif;font-size:12px;color:var(--text-secondary)}
+  .lang{display:inline-flex;align-items:center;gap:7px;font-weight:500}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+  .stat{display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+  .stat svg{width:12px;height:12px}
+  .today{margin-left:auto;display:inline-flex;align-items:center;gap:4px;color:var(--text-primary);font-weight:700;
+    background:rgba(169,182,137,.22);padding:3px 9px;border-radius:999px}
+  .today svg{width:11px;height:11px}
+
+  /* candidate card extras (rich report rows) */
+  .ksource{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .pill{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--text-secondary);background:rgba(24,26,27,.05);border:1px solid var(--line);
+    padding:3px 9px;border-radius:999px}
+  .rows{margin-top:14px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .row{font-size:13.5px;line-height:1.55;color:var(--text-secondary)}
+  .row .k{font-family:"Inter",sans-serif;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--brand-accent);display:block;margin-bottom:1px}
+  .action{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:9px}
+  .action .alabel{font-family:"Inter",sans-serif;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted)}
+  .chip{font-family:"Inter",sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;
+    padding:4px 11px;border-radius:999px;color:var(--text-primary);background:var(--chipbg,var(--accent-yellow));
+    border:1px solid rgba(24,26,27,.08)}
+
+  /* topics (cross-platform discussion) */
+  .topics{margin-top:22px;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}
+  @media(max-width:480px){.topics{grid-template-columns:1fr}}
+  .topic{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 24px;break-inside:avoid}
+  .topic h3{font-family:"Inter",sans-serif;font-size:19px;font-weight:600;color:var(--text-primary);margin-bottom:13px}
+  .topic ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .topic li{font-size:13.8px;line-height:1.55;color:var(--text-secondary);padding-left:16px;position:relative}
+  .topic li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;
+    background:var(--brand-accent)}
+  .topic li .src{font-family:"Inter",sans-serif;font-size:10.5px;color:var(--muted);margin-left:6px}
+
+  /* simple list cards (hermes ideas / watchlist / hype) */
+  .stack{margin-top:22px;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}
+  @media(max-width:480px){.stack{grid-template-columns:1fr}}
+  .mini{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;break-inside:avoid;position:relative;overflow:hidden}
+  .mini::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--miniaccent,var(--brand-accent))}
+  .mini .mname{font-family:"Inter",sans-serif;font-size:17px;font-weight:600;color:var(--text-primary)}
+  .mini .mname a{color:inherit;text-decoration:none;border-bottom:1px dashed var(--line)}
+  .mini .mrow{font-size:13px;line-height:1.5;color:var(--text-secondary);margin-top:7px}
+  .mini .mrow .k{font-family:"Inter",sans-serif;font-size:9.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);display:block}
+  .idea{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.55;color:var(--text-secondary)}
+  .idea::before{content:"→";color:var(--brand-primary);font-weight:700;flex:none}
+
+  /* footer */
+  footer.foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);text-align:center;
+    font-family:"Inter",sans-serif;font-size:11.5px;color:var(--muted);letter-spacing:.04em;line-height:1.7}
+  footer.foot a{color:var(--brand-accent);text-decoration:none}
+
+  /* ---------- PDF / print overrides ---------- */
+  body.pdf .card{opacity:1!important;transform:none!important;animation:none!important}
+  body.pdf .card::before{opacity:1!important}
+  @media print{
+    .card{opacity:1!important;transform:none!important;animation:none!important}
+    .card::before{opacity:1!important}
+  }
+</style>
+</head>
+<body class="{{ body_class }}">
+  <div class="atmos"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+
+    <!-- ============ HEADER ============ -->
+    <header>
+      <div class="eyebrow">project radar · {{ date_human }}</div>
+      <div class="legend">
+        <span class="legend-lbl">Rozet — işe yararlık (10 üzerinden):</span>
+        <span><i style="background:#a9b689"></i> 8.5+ çok yüksek</span>
+        <span><i style="background:#96aed1"></i> 7.5–8.4 yüksek</span>
+        <span><i style="background:#d8cb8e"></i> 7.0–7.4 iyi</span>
+        <span><i style="background:#e6c0a3"></i> 7.0 altı niş/temkinli</span>
+      </div>
+    </header>
+
+    <!-- ============ EN İYİ ADAYLAR ============ -->
+    {% if candidates %}
+    <section class="section first">
+      <div class="shead">
+        <span class="skicker">01 — Tüm kaynaklar</span>
+        <span class="stitle">En iyi adaylar</span>
+        <span class="scount"><b>{{ candidates|length }}</b> aday</span>
+      </div>
+      <p class="sdesc">İşe yararlık ve LLM / ajan uyumuna göre filtrelenmiş, en yüksek skorlu adaylar.</p>
+      <div class="grid">
+        {% for c in candidates %}
+        {% set sb = score_bg(c.score) %}
+        <article class="card" style="--cardaccent:{{ sb }};--scorebg:{{ sb }}">
+          <div class="chead">
+            <div class="rank">{{ "%02d"|format(c.rank) }}</div>
+            <div class="ctitle">
+              {% if c.owner %}<div class="owner">{{ c.owner }} /</div>{% endif %}
+              <div class="repo">{{ c.name }}</div>
+              {% if c.url %}<a class="link" href="{{ c.url }}">{{ ext_ico }}{{ c.url|strip_scheme }}</a>{% endif %}
+            </div>
+            <div class="score">
+              <div class="num">{{ "%.1f"|format(c.score / 10) }}<small>/10</small></div>
+              <div class="cap">işe yarar</div>
+            </div>
+          </div>
+          <div class="ksource">
+            {% if c.source %}<span class="pill">{{ c.source }}</span>{% endif %}
+            {% if c.category %}<span class="pill">{{ c.category }}</span>{% endif %}
+          </div>
+          <div class="rows">
+            {% if c.what %}<div class="row"><span class="k">Ne yapıyor</span>{{ c.what }}</div>{% endif %}
+            {% if c.why %}<div class="row"><span class="k">Neden gündemde</span>{{ c.why }}</div>{% endif %}
+            {% if c.benefit %}<div class="row"><span class="k">Bize faydası</span>{{ c.benefit }}</div>{% endif %}
+            {% if c.llm %}<div class="row"><span class="k">LLM / ajan uyumu</span>{{ c.llm }}</div>{% endif %}
+            {% if c.adoption %}<div class="row"><span class="k">Kurulum / benimsenme</span>{{ c.adoption }}</div>{% endif %}
+            {% if c.risks %}<div class="row"><span class="k">Riskler</span>{{ c.risks }}</div>{% endif %}
+          </div>
+          {% if c.action %}
+          <div class="action">
+            <span class="alabel">Aksiyon</span>
+            <span class="chip" style="--chipbg:{{ action_bg(c.action) }}">{{ c.action }}</span>
+          </div>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ============ GITHUB TRENDING ============ -->
+    {% if trending %}
+    <section class="section">
+      <div class="shead">
+        <span class="skicker">02 — GitHub</span>
+        <span class="stitle">Bugün trend olan depolar</span>
+        <span class="scount"><b>{{ trending|length }}</b> depo</span>
+      </div>
+      <p class="sdesc">GitHub Trending (günlük) anlık görüntüsü — işe yararlık puanına göre sıralı.</p>
+      <div class="grid">
+        {% for d in trending %}
+        {% set sb = score_bg(d.score) %}
+        {% set url = "https://github.com/" ~ d.owner ~ "/" ~ d.repo %}
+        <article class="card" style="--cardaccent:{{ sb }};--scorebg:{{ sb }}">
+          <div class="chead">
+            <div class="rank">{{ "%02d"|format(d.rank) }}</div>
+            <div class="ctitle">
+              <div class="owner">{{ d.owner }} /</div>
+              <div class="repo">{{ d.repo }}</div>
+              <a class="link" href="{{ url }}">{{ ext_ico }}{{ url|strip_scheme }}</a>
+            </div>
+            <div class="score">
+              <div class="num">{{ "%.1f"|format(d.score / 10) }}<small>/10</small></div>
+              <div class="cap">işe yarar</div>
+            </div>
+          </div>
+          <p class="desc">{{ d.desc }}{% if d.note %}<span class="note">{{ d.note }}</span>{% endif %}</p>
+          <div class="meta">
+            <span class="lang"><span class="dot" style="background:{{ lang_color(d.lang) }}"></span>{{ d.lang }}</span>
+            <span class="stat">{{ star_ico }}{{ d.stars|tr_num }}</span>
+            <span class="today">{{ up_ico }}{{ d.today|tr_num }} bugün</span>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ============ GÜNDEM / KONUŞULANLAR ============ -->
+    {% if topics %}
+    <section class="section">
+      <div class="shead">
+        <span class="skicker">03 — Diğer platformlar</span>
+        <span class="stitle">Bugün konuşulanlar</span>
+      </div>
+      <p class="sdesc">Hacker News, Product Hunt, bültenler ve sosyal kaynaklardan çıkan konu başlıkları.</p>
+      <div class="topics">
+        {% for t in topics %}
+        <div class="topic">
+          <h3>{{ t.title }}</h3>
+          <ul>
+            {% for it in t["items"] %}
+            <li>{% if it.url %}<a href="{{ it.url }}" style="color:inherit;text-decoration:underline;text-decoration-color:var(--line)">{{ it.text }}</a>{% else %}{{ it.text }}{% endif %}{% if it.source %}<span class="src">— {{ it.source }}</span>{% endif %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ============ HERMES WORKFLOW FİKİRLERİ ============ -->
+    {% if hermes_ideas %}
+    <section class="section">
+      <div class="shead">
+        <span class="skicker">04 — Entegrasyon</span>
+        <span class="stitle">Hermes workflow fikirleri</span>
+      </div>
+      <div class="stack">
+        {% for idea in hermes_ideas %}
+        <div class="mini" style="--miniaccent:var(--brand-primary)">
+          <div class="idea">{{ idea }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ============ WATCHLIST ============ -->
+    {% if watchlist %}
+    <section class="section">
+      <div class="shead">
+        <span class="skicker">05 — İleride</span>
+        <span class="stitle">Watchlist'e alınanlar</span>
+        <span class="scount"><b>{{ watchlist|length }}</b> kayıt</span>
+      </div>
+      <div class="stack">
+        {% for w in watchlist %}
+        <div class="mini" style="--miniaccent:var(--accent-purple)">
+          <div class="mname">{% if w.url %}<a href="{{ w.url }}">{{ w.name }}</a>{% else %}{{ w.name }}{% endif %}</div>
+          {% if w.note %}<div class="mrow">{{ w.note }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ============ HYPE / ŞÜPHELİ / REDDEDİLENLER ============ -->
+    {% if hype %}
+    <section class="section">
+      <div class="shead">
+        <span class="skicker">06 — Filtre</span>
+        <span class="stitle">Hype / şüpheli / reddedilenler</span>
+        <span class="scount"><b>{{ hype|length }}</b> kayıt</span>
+      </div>
+      <div class="stack">
+        {% for h in hype %}
+        <div class="mini" style="--miniaccent:var(--accent-red)">
+          <div class="mname">{% if h.url %}<a href="{{ h.url }}">{{ h.name }}</a>{% else %}{{ h.name }}{% endif %}</div>
+          {% if h.why_suspect %}<div class="mrow"><span class="k">Neden şüpheli</span>{{ h.why_suspect }}</div>{% endif %}
+          {% if h.why_noaction %}<div class="mrow"><span class="k">Neden bugün aksiyon yok</span>{{ h.why_noaction }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <footer class="foot">
+      Bu rapor keşif ve değerlendirme amaçlıdır — repo clone / install / test yapılmaz.<br>
+      Veriler GitHub Trending ve listelenen kaynakların anlık görüntüsünden alınmıştır · <a href="https://github.com/trending">github.com/trending</a>
+    </footer>
+  </div>
+</body>
+</html>

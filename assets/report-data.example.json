@@ -1,0 +1,119 @@
+{
+  "date": "2026-06-07",
+  "date_human": "7 Haziran 2026",
+
+  "candidates": [
+    {
+      "name": "Understand-Anything", "owner": "Lum1104",
+      "url": "https://github.com/Lum1104/Understand-Anything",
+      "source": "GitHub Trending", "category": "Coding agents", "score": 85,
+      "what": "Herhangi bir kod tabanını/dokümantasyonu gezilebilir, aranabilir interaktif bir knowledge graph'a çeviren bir Claude Code eklentisi; çok-ajanlı pipeline ile her dosya, fonksiyon ve bağımlılığı analiz ediyor.",
+      "why": "Yeni kod tabanına hızlı adapte olma ihtiyacına net cevap veriyor; Claude Code, Codex, Cursor, Copilot ve Gemini CLI ile çalışıyor.",
+      "benefit": "Samet'in aktif değerlendirdiği codebase-to-knowledge-graph araçlarıyla (CodeGraph, Graphify) doğrudan aynı kategoride — Cofiner ve NarPOS kod tabanlarında denemeye değer.",
+      "llm": "Claude Code, Codex, Cursor, Copilot ve Gemini CLI ile çalışır; MCP üzerinden Hermes dahil ajan akışlarına skill olarak takılır.",
+      "adoption": "README + örnekler net, kurulum eklenti formatında; topluluk sinyali güçlü (4.7k bugün).",
+      "risks": "Çok-ajanlı analiz büyük repolarda maliyetli olabilir; çıktı kalitesi repo boyutuyla değişir.",
+      "action": "DETAYLI İNCELE"
+    },
+    {
+      "name": "claude-mem", "owner": "thedotmack",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "source": "GitHub Trending", "category": "Agent memory", "score": 80,
+      "what": "AI ajanlarına oturumlar arası kalıcı bellek kazandırıyor: oturumdaki işleri yakalayıp AI ile sıkıştırıyor ve ilgili bağlamı sonraki oturumlara geri enjekte ediyor.",
+      "why": "\"Her seferinde sıfırdan başlama\" problemini çözmesi nedeniyle ajan topluluğunda yüksek ilgi görüyor.",
+      "benefit": "Hermes'in çok-oturumlu çalışmasında bağlam sürekliliği sağlayabilir; rolling Planner/Designer pipeline'ında işe yarar.",
+      "llm": "Claude Code, Codex, Gemini, Copilot ve OpenCode ile çalışır; MCP üzerinden Hermes dahil herhangi bir ajana bağlanır.",
+      "adoption": "npm kurulumu, geniş ajan desteği; aktif geliştiriliyor.",
+      "risks": "Bellek deposunun gizliliği ve şişmesi yönetilmeli; veri saklama politikası incelenmeli.",
+      "action": "HERMES WORKFLOW FİKRİ"
+    },
+    {
+      "name": "knowledge-work-plugins", "owner": "anthropics",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "source": "GitHub Trending", "category": "Agent OS / workflow", "score": 85,
+      "what": "Anthropic'in resmî, Claude'u belirli iş rollerinde uzmanlaştıran 11 eklenti koleksiyonu (Cowork için; Claude Code ile uyumlu): satış, destek, ürün, pazarlama, hukuk, finans, veri.",
+      "why": "Resmî Anthropic kaynağı olması ve şirket süreçlerine özelleştirilebilir olması nedeniyle gündemde.",
+      "benefit": "Hermes'in skill kütüphanesi için referans mimari; finans/satış eklentileri Cofiner tarafında uyarlanabilir.",
+      "llm": "Claude Cowork ve Claude Code için skill/connector; aynı format diğer ajan/LLM araçlarına da uyarlanabilir.",
+      "adoption": "Resmî dokümantasyon, slash komut ve alt-ajan örnekleri mevcut.",
+      "risks": "Asıl değer özelleştirmede; kutudan çıktığı haliyle genel kalıyor.",
+      "action": "WATCHLIST'E AL"
+    },
+    {
+      "name": "twenty", "owner": "twentyhq",
+      "url": "https://github.com/twentyhq/twenty",
+      "source": "GitHub Trending", "category": "Sales / CRM", "score": 85,
+      "what": "Salesforce'a açık kaynak alternatif modern bir CRM; nesneleri, alanları ve görünümleri kod olarak tanımlayıp (twenty-sdk) stack'in geri kalanı gibi sürümleyip dağıtabiliyorsun.",
+      "why": "Self-hosted, kod-olarak-CRM yaklaşımı ve olgunlaşan ekosistemi nedeniyle gündemde; 46k+ yıldız.",
+      "benefit": "Samet'in FinTech/CRM ilgisiyle örtüşüyor; Cofiner tarafında müşteri/satış verisi için esnek, kendi kontrolünde bir temel olabilir.",
+      "llm": "API/SDK üzerinden herhangi bir LLM/ajan akışına (Claude, OpenAI, Codex, Hermes) bağlanabilir; resmî MCP yok ama REST ile entegre edilir.",
+      "adoption": "Docker ile self-host, twenty-sdk ve net dokümantasyon; aktif geliştiriliyor.",
+      "risks": "Karmaşık iş ihtiyaçlarına uyarlamak teknik efor ister; self-host bakımı gerekir.",
+      "action": "DETAYLI İNCELE"
+    }
+  ],
+
+  "trending": [
+    { "rank": 1, "owner": "Lum1104", "repo": "Understand-Anything", "lang": "TypeScript", "stars": 36028, "today": 4697, "score": 85,
+      "desc": "Herhangi bir kod tabanını, bilgi tabanını veya dokümantasyonu; gezinebileceğin, arayabileceğin ve sorular sorabileceğin interaktif bir bilgi grafiğine (knowledge graph) dönüştüren bir Claude Code eklentisi. Çok-ajanlı (multi-agent) bir pipeline ile projedeki her dosya, fonksiyon, sınıf ve bağımlılığı analiz edip görsel bir panele döküyor. Yeni bir kod tabanına hızlı adapte olmak için tasarlanmış; Claude Code, Codex, Cursor, Copilot ve Gemini CLI ile çalışıyor." },
+    { "rank": 2, "owner": "affaan-m", "repo": "ECC", "lang": "JavaScript", "stars": 194448, "today": 1915, "score": 60,
+      "desc": "AI kodlama ajanları için 'harness-native' bir operatör sistemi: skill'ler, hafıza optimizasyonu, sürekli öğrenme, güvenlik taraması ve araştırma-öncelikli geliştirme akışlarını tek pakette toplamayı amaçlıyor. Codex, Claude Code, Cursor, OpenCode, Gemini ve Copilot arasında çalışacak hazır ajan / hook / MCP konfigürasyonları sunuyor.",
+      "note": "Not: yıldız sayısı projenin gerçek olgunluğuna göre orantısız yüksek görünüyor; özünde ileri düzey ajan kullanıcılarına yönelik bir konfigürasyon koleksiyonu." },
+    { "rank": 3, "owner": "rohitg00", "repo": "ai-engineering-from-scratch", "lang": "Python", "stars": 20808, "today": 2155, "score": 80,
+      "desc": "Yapay zekâ mühendisliğini sıfırdan, elle inşa ederek öğreten ücretsiz ve açık kaynaklı bir müfredat: 20 fazda 503 ders, ~320 saat. Lineer cebirden otonom ajan sürülerine kadar her algoritmayı önce ham matematikle kurduruyor (backprop, tokenizer, attention, agent loop). Python, TypeScript, Rust ve Julia ile; her ders yeniden kullanılabilir bir çıktı (prompt, skill, ajan, MCP sunucusu) bırakıyor." },
+    { "rank": 4, "owner": "anthropics", "repo": "knowledge-work-plugins", "lang": "Python", "stars": 16700, "today": 1718, "score": 85,
+      "desc": "Anthropic'in açık kaynak yaptığı, Claude'u belirli iş rollerinde uzmana dönüştüren 11 resmî eklenti koleksiyonu (Claude Cowork için; Claude Code ile de uyumlu). Satış, müşteri desteği, ürün yönetimi, pazarlama, hukuk, finans, veri gibi fonksiyonlar için skill, connector, slash komut ve alt-ajanları bir araya getiriyor. Asıl gücü, şirketinin araç ve süreçlerine göre özelleştirildiğinde ortaya çıkıyor." },
+    { "rank": 5, "owner": "mukul975", "repo": "Anthropic-Cybersecurity-Skills", "lang": "Python", "stars": 10147, "today": 880, "score": 75,
+      "desc": "AI ajanlarına kıdemli bir güvenlik analistinin yetkinliklerini kazandırmayı hedefleyen, 26 güvenlik alanına yayılmış 754 yapılandırılmış siber güvenlik skill'i içeren açık kaynak kütüphane. Her skill beş sektör çerçevesine (MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF) eşlenmiş. Claude Code, Copilot, Codex CLI, Cursor ve 20+ platformla çalışıyor.",
+      "note": "Not: ismine rağmen Anthropic'in resmî projesi değil, bağımsız bir topluluk çalışması." },
+    { "rank": 6, "owner": "hardikpandya", "repo": "stop-slop", "lang": "—", "stars": 5050, "today": 539, "score": 70,
+      "desc": "Metinlerden 'AI kokusu' veren kalıpları temizlemeye yarayan tek dosyalık bir skill. Yapay zekânın öngörülebilir açılış cümleleri, klişe yapılar, gereksiz zarflar ve em-dash gibi alışkanlıklarını yakalayıp kaldırması için Claude'a (ya da herhangi bir LLM'e) kurallar öğretiyor. Doğrudanlık, ritim, güven, özgünlük ve yoğunluk üzerinden 50 puanlık bir değerlendirme de içeriyor." },
+    { "rank": 7, "owner": "Leonxlnx", "repo": "taste-skill", "lang": "Shell", "stars": 21891, "today": 1430, "score": 75,
+      "desc": "AI ajanlarının ürettiği arayüzleri 'kalıp gibi' görünmekten kurtarmaya yönelik taşınabilir Agent Skill'ler: daha güçlü yerleşim, tipografi, hareket ve boşluk kullanımı kazandırıyor. Web/mobil/marka kitleri için referans panoları üreten görsel-üretim skill'leri de içeriyor. Codex, Cursor ve Claude Code ile kullanılmak üzere `npx skills add` ile kuruluyor." },
+    { "rank": 8, "owner": "DigitalPlatDev", "repo": "FreeDomain", "lang": "HTML", "stars": 167452, "today": 1219, "score": 70,
+      "desc": "Herkese ücretsiz alan adı (domain) sunan bir servis: .dpdns.org, .us.kg, .qzz.io, .xx.kg, .qd.je gibi uzantıları kayıt edip Cloudflare gibi istediğin DNS sağlayıcısıyla barındırabiliyorsun. Bütçesi olmayanların da internette kendi yerini açabilmesini hedefliyor; 500.000'den fazla domain kayıtlı. Ücretsiz proje/portföy siteleri için pratik bir seçenek." },
+    { "rank": 9, "owner": "jellyfin", "repo": "jellyfin", "lang": "C#", "stars": 52396, "today": 83, "score": 90,
+      "desc": "Tamamen özgür ve açık kaynaklı bir medya sistemi — Plex/Emby'ye reklamsız ve abonelik gerektirmeyen bir alternatif. Bu depo, medya kütüphaneni (film, dizi, müzik) yönetip cihazlara akıtan sunucu arka ucunu ve API'yi barındırıyor. Olgun, geniş kullanıcı kitlesine sahip ve uzun süredir sahada test edilmiş bir proje." },
+    { "rank": 10, "owner": "Axorax", "repo": "awesome-free-apps", "lang": "JavaScript", "stars": 5301, "today": 731, "score": 75,
+      "desc": "PC ve mobil için en iyi ücretsiz uygulamaların özenle derlenmiş bir listesi (awesome-list formatında). Ses, tarayıcı, iletişim, sıkıştırma, özelleştirme gibi kategorilere ayrılmış; Windows/macOS/Linux ve açık kaynak filtreleriyle geliyor. Yeni bir makine kurarken veya ücretsiz alternatif ararken hızlı bir başvuru kaynağı." },
+    { "rank": 11, "owner": "twentyhq", "repo": "twenty", "lang": "TypeScript", "stars": 46878, "today": 216, "score": 85,
+      "desc": "Salesforce'a açık kaynak bir alternatif olan, 'kendi CRM'ini inşa et' yaklaşımıyla kurulan modern bir CRM. Nesneleri, alanları ve görünümleri kod olarak tanımlayıp (twenty-sdk) tıpkı stack'inin geri kalanı gibi sürümleyip dağıtabiliyorsun. Bulut ya da self-hosted çalışıyor; teknik ekiplerin karmaşık iş ihtiyaçlarına göre uyarlayabileceği esnek bir yapı sunuyor." },
+    { "rank": 12, "owner": "Open-Dev-Society", "repo": "OpenStock", "lang": "TypeScript", "stars": 12143, "today": 156, "score": 75,
+      "desc": "Pahalı borsa/piyasa platformlarına açık kaynak bir alternatif: gerçek zamanlı fiyat takibi, kişiselleştirilmiş uyarılar ve detaylı şirket içgörüleri sunuyor. Next.js, TypeScript, Tailwind, shadcn/ui, MongoDB ve TradingView/Finnhub entegrasyonlarıyla kurulu. FinTech tarafıyla ilgilenenler için incelenmeye değer, AGPL-3.0 lisanslı bir proje." },
+    { "rank": 13, "owner": "thedotmack", "repo": "claude-mem", "lang": "TypeScript", "stars": 78691, "today": 352, "score": 80,
+      "desc": "AI ajanlarına oturumlar arası kalıcı bellek kazandıran bir araç: ajanın oturum boyunca yaptıklarını yakalıyor, AI ile sıkıştırıyor ve ilgili bağlamı sonraki oturumlara geri enjekte ediyor. Böylece her seferinde sıfırdan başlama derdini ortadan kaldırıyor. Claude Code, Codex, Gemini, Copilot ve OpenCode dahil pek çok ajanla çalışıyor." },
+    { "rank": 14, "owner": "st-tech", "repo": "ppf-contact-solver", "lang": "Python", "stars": 3502, "today": 170, "score": 70,
+      "desc": "ZOZO'nun (Japonya'nın en büyük moda e-ticaret şirketi) geliştirdiği, fizik tabanlı simülasyonlar için bir temas (contact) çözücüsü; kumaş/kabuk, katı cisim ve ip/halat simülasyonlarını çözüyor. GPU üzerinde tek-duyarlıkla çalışan, sonlu elemanlar yöntemi (FEM) kullanan, iç-içe geçmeleri engelleyen sağlam ve ölçeklenebilir bir motor. Blender eklentisi, Docker imajı ve hatta LLM ile doğal dilde simülasyon çalıştıran MCP desteğiyle geliyor." }
+  ],
+
+  "topics": [
+    { "title": "MCP / integrations", "items": [
+      { "text": "Resmî MCP registry'sine eklenen yeni server'lar tartışılıyor; özellikle Drive/Gmail/Calendar köprüleri.", "source": "Hacker News" },
+      { "text": "Self-hosted MCP gateway desenleri (tek noktadan auth + rate limit) bültenlerde öne çıkıyor.", "source": "Latent Space" }
+    ]},
+    { "title": "Coding agents", "items": [
+      { "text": "Codebase-to-knowledge-graph araçları (Understand-Anything, Graphify) karşılaştırılıyor.", "source": "Product Hunt" },
+      { "text": "Agent memory / kalıcı bağlam yaklaşımları geliştirici topluluğunda gündemde.", "source": "TLDR AI" }
+    ]},
+    { "title": "Local / self-hosted AI", "items": [
+      { "text": "Mac Mini M4 üzerinde yerel ajan orkestrasyonu için kaynak profilleme notları paylaşılıyor.", "source": "X / kaydedilenler" }
+    ]}
+  ],
+
+  "hermes_ideas": [
+    "Bu radarı her gün 08:00'de cron ile çalıştırıp çıktı PDF'i Drive'a yükleyen + Discord'a özet atan bir workflow.",
+    "claude-mem benzeri kalıcı bellek katmanını Hermes'in rolling Planner/Designer pipeline'ına bağlamak.",
+    "Understand-Anything'i NarPOS ve Cofiner repolarına manuel komutla çalıştırıp knowledge graph üretmek (radar dışı, ayrı adım)."
+  ],
+
+  "watchlist": [
+    { "name": "twenty (open-source CRM)", "url": "https://github.com/twentyhq/twenty", "note": "Self-hosted, kod-olarak-CRM. FinTech/satış otomasyonu denemeleri için ileride." },
+    { "name": "OpenStock", "url": "https://github.com/Open-Dev-Society/OpenStock", "note": "FinTech ilgisiyle örtüşüyor; TradingView/Finnhub entegrasyonu incelemeye değer." }
+  ],
+
+  "hype": [
+    { "name": "ECC (affaan-m)", "url": "https://github.com/affaan-m/ECC",
+      "why_suspect": "194k yıldız, projenin olgunluğuna göre orantısız yüksek; özünde ileri düzey konfigürasyon koleksiyonu.",
+      "why_noaction": "Somut günlük fayda belirsiz; önce gerçek kullanım örnekleri görülmeli." }
+  ]
+}
