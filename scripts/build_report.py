@@ -8,8 +8,10 @@ DEFAULT output is a single HTML file identical to the reference design (animatio
 The report uses a single font — Inter — loaded from Google Fonts in the template
 (SIL OFL, free, available everywhere; no fonts are bundled with the skill). Offline,
 it falls back to a system sans.
-PDF is optional (--out *.pdf or --format pdf): rendered via headless Chromium as one
-tall page = full content height, so cards never split across page breaks.
+PDF (--out *.pdf or --format pdf) is a MOBILE-optimised, A4-portrait, paginated layout:
+two compact cards per row, rendered via headless Chromium. Easy to open and read on a
+phone (swipe page by page); cards never split across page breaks (break-inside:avoid).
+The mobile layout lives in the template under `body.pdf`; the HTML output is unaffected.
 
 Usage:
   python build_report.py --data report-data.json --out Project-Radar-2026-06-07.html
@@ -23,16 +25,24 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 ASSETS = SKILL_DIR / "assets"
 TEMPLATE = "report-template.html"
 
-# language dot colours (from the reference design)
+# language dot colours (from the reference design palette)
 LANG_COLORS = {
     "TypeScript": "#96aed1", "TSX": "#96aed1", "JavaScript": "#d8cb8e",
     "Python": "#a9b689", "C#": "#dfceea", "Shell": "#e2bfce", "HTML": "#e6c0a3",
     "Go": "#bed0e3", "Rust": "#e6c0a3", "Jupyter Notebook": "#d8cb8e", "—": "#c9cabf",
+    # GitHub Trending tüm dilleri kapsadığı için palet renkleriyle genişletildi
+    "C++": "#96aed1", "C": "#bed0e3", "Java": "#e6c0a3", "Kotlin": "#dfceea",
+    "Swift": "#e6c0a3", "Ruby": "#e2bfce", "PHP": "#dfceea", "Dart": "#bed0e3",
+    "Vue": "#a9b689", "Svelte": "#e6c0a3", "Zig": "#e6c0a3", "Lua": "#96aed1",
+    "Elixir": "#dfceea", "Scala": "#e2bfce", "Haskell": "#dfceea", "R": "#bed0e3",
+    "Julia": "#dfceea", "Dockerfile": "#bed0e3", "CSS": "#96aed1", "SCSS": "#e2bfce",
+    "MDX": "#d8cb8e", "Astro": "#e6c0a3", "Objective-C": "#bed0e3", "Roff": "#c9cabf",
 }
 
 # action class -> chip background
 ACTION_COLORS = {
-    "HERMES WORKFLOW FİKRİ": "#a9b689",
+    "WORKFLOW / AGENT FİKRİ": "#a9b689",
+    "HERMES WORKFLOW FİKRİ": "#a9b689",   # geri uyum (eski etiket)
     "DETAYLI İNCELE": "#96aed1",
     "WATCHLIST'E AL": "#dfceea",
     "TAKIP ET": "#d8cb8e",
@@ -99,7 +109,7 @@ def render_html(data: dict, body_class: str = "") -> str:
         candidates=candidates,
         trending=trending,
         topics=data.get("topics", []),
-        hermes_ideas=data.get("hermes_ideas", []),
+        agent_ideas=data.get("agent_ideas", data.get("hermes_ideas", [])),
         watchlist=data.get("watchlist", []),
         hype=data.get("hype", []),
         score_bg=score_bg, action_bg=action_bg, lang_color=lang_color,
@@ -107,8 +117,12 @@ def render_html(data: dict, body_class: str = "") -> str:
     )
 
 
-def html_to_pdf_playwright(html: str, out: Path, width: int, scale: int) -> bool:
-    """Render via headless Chromium as one tall page = full content height."""
+def html_to_pdf_playwright(html: str, out: Path, scale: int) -> bool:
+    """Render via headless Chromium as a paginated, mobile-friendly A4 portrait PDF.
+
+    Print emulation honours the template's `body.pdf` rules (2 compact cards/row);
+    Chromium paginates into A4 pages and `break-inside:avoid` keeps cards whole.
+    """
     try:
         from playwright.sync_api import sync_playwright
     except Exception:
@@ -119,7 +133,7 @@ def html_to_pdf_playwright(html: str, out: Path, width: int, scale: int) -> bool
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(args=["--no-sandbox"])
-            page = browser.new_page(viewport={"width": width, "height": 1200},
+            page = browser.new_page(viewport={"width": 800, "height": 1130},
                                     device_scale_factor=scale)
             page.goto(tmp.as_uri(), wait_until="networkidle")
             try:
@@ -127,25 +141,16 @@ def html_to_pdf_playwright(html: str, out: Path, width: int, scale: int) -> bool
             except Exception:
                 pass
             page.wait_for_timeout(400)
-            full_h = page.evaluate(
-                "Math.ceil(Math.max(document.body.scrollHeight,"
-                "document.documentElement.scrollHeight))")
-            # PDF spec caps page height ~14400pt; guard with multi-page fallback
-            if full_h * 0.75 > 14000:
-                page.pdf(path=str(out), width=f"{width}px", format=None,
-                         print_background=True, prefer_css_page_size=False,
-                         margin={"top": "0", "bottom": "0", "left": "0", "right": "0"})
-            else:
-                page.pdf(path=str(out), width=f"{width}px", height=f"{full_h}px",
-                         print_background=True,
-                         margin={"top": "0", "bottom": "0", "left": "0", "right": "0"})
+            page.pdf(path=str(out), format="A4", print_background=True,
+                     margin={"top": "10mm", "bottom": "10mm",
+                             "left": "8mm", "right": "8mm"})
             browser.close()
         return True
     finally:
         tmp.unlink(missing_ok=True)
 
 
-def html_to_pdf_wkhtmltopdf(html: str, out: Path, width: int) -> bool:
+def html_to_pdf_wkhtmltopdf(html: str, out: Path) -> bool:
     if not shutil.which("wkhtmltopdf"):
         return False
     tmp = ASSETS / "._render.html"
@@ -153,9 +158,9 @@ def html_to_pdf_wkhtmltopdf(html: str, out: Path, width: int) -> bool:
     try:
         subprocess.run(
             ["wkhtmltopdf", "--enable-local-file-access", "--print-media-type",
-             "--page-width", f"{width}px", "--page-height", "1800px",
-             "--margin-top", "0", "--margin-bottom", "0",
-             "--margin-left", "0", "--margin-right", "0",
+             "--page-size", "A4", "--orientation", "Portrait",
+             "--margin-top", "10mm", "--margin-bottom", "10mm",
+             "--margin-left", "8mm", "--margin-right", "8mm",
              str(tmp), str(out)],
             check=True, capture_output=True)
         return True
@@ -174,7 +179,8 @@ def main() -> int:
                     help="output file; .html (default) for the standalone report, .pdf for PDF")
     ap.add_argument("--format", choices=["auto", "html", "pdf"], default="auto",
                     help="override output format (default: inferred from --out, fallback html)")
-    ap.add_argument("--width", type=int, default=1320, help="PDF render width in px (default 1320)")
+    ap.add_argument("--width", type=int, default=1320,
+                    help="(deprecated) ignored — PDF now uses a fixed A4 portrait page")
     ap.add_argument("--scale", type=int, default=2, help="PDF device scale factor (default 2)")
     args = ap.parse_args()
 
@@ -193,14 +199,14 @@ def main() -> int:
         print(f"[ok] HTML written: {out}")
         return 0
 
-    # PDF: static (no animations so cards aren't captured mid-fade)
+    # PDF: mobile A4 layout (body.pdf), static (no animations mid-fade)
     html = render_html(data, body_class="pdf")
-    if html_to_pdf_playwright(html, out, args.width, args.scale):
+    if html_to_pdf_playwright(html, out, args.scale):
         print(f"[ok] PDF (Chromium): {out}")
         return 0
-    print("[warn] Playwright/Chromium unavailable — trying wkhtmltopdf "
-          "(grain/gradient atmosphere will be approximated).", file=sys.stderr)
-    if html_to_pdf_wkhtmltopdf(html, out, args.width):
+    print("[warn] Playwright/Chromium unavailable — trying wkhtmltopdf fallback.",
+          file=sys.stderr)
+    if html_to_pdf_wkhtmltopdf(html, out):
         print(f"[ok] PDF (wkhtmltopdf): {out}")
         return 0
     fallback = out.with_suffix(".html")

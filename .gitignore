@@ -9,6 +9,11 @@ venv/
 /out/
 /output/
 *.local.html
+Project-Radar-*.html
+Project-Radar-*.pdf
+
+# Persistent watchlist data (user-curated; default lives under the skill dir)
+/watchlist/
 
 # OS
 .DS_Store

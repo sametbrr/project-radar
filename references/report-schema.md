@@ -13,8 +13,8 @@ otomatik gizlenir — **uydurma içerik ekleme**.
 | `candidates[]` | EN IYI ADAYLAR | 01 — En iyi adaylar (en iyi **4** aday) |
 | `trending[]` | (GitHub trending) | 02 — Bugün trend olan depolar |
 | `topics[]` | BUGUNUN KONU BASLIKLARI | 03 — Bugün konuşulanlar |
-| `hermes_ideas[]` | HERMES WORKFLOW FIKIRLERI | 04 — Hermes workflow fikirleri |
-| `watchlist[]` | WATCHLIST'E ALINACAKLAR | 05 — Watchlist'e alınanlar |
+| `agent_ideas[]` | WORKFLOW / AGENT FIKIRLERI | 04 — Workflow / Agent fikirleri |
+| `watchlist[]` | WATCHLIST ÖNERILERI | 05 — Watchlist önerileri |
 | `hype[]` | HYPE / SUPHELI / REDDEDILENLER | 06 — Hype / şüpheli / reddedilenler |
 
 > Not: NOTLAR bölümü ("keşif amaçlıdır, test yapılmaz") PDF footer'ında sabittir.
@@ -44,15 +44,17 @@ otomatik gizlenir — **uydurma içerik ekleme**.
     }
   ],
 
-  "trending": [                         // GitHub Trending — referans kart düzeni
+  "trending": [                         // GitHub Trending — TAM liste (tüm diller/türler)
     {
       "owner": "Lum1104", "repo": "Understand-Anything",
-      "lang":  "TypeScript",            // dil noktası rengi otomatik
+      "lang":  "TypeScript",            // dil noktası rengi otomatik (tüm diller desteklenir)
       "stars": 36028, "today": 4697,    // tam sayı; PDF'te 36.028 / 4.697 olarak biçimlenir
       "score": 85,                      // 0–100
       "desc":  "Türkçe açıklama ...",
       "note":  "Opsiyonel uyarı notu ..."   // varsa italik dipnot
     }
+    // Kaynak: scripts/fetch_github_trending.py çıktısı (owner/repo/lang/stars/today/url/desc);
+    // score + Türkçe desc agent tarafından eklenir. Sabit ~14 sınırı yoktur — tam liste taşınır.
   ],
 
   "topics": [                           // platformlar arası konu başlıkları
@@ -64,7 +66,7 @@ otomatik gizlenir — **uydurma içerik ekleme**.
     }
   ],
 
-  "hermes_ideas": [ "..." ],            // düz metin maddeler
+  "agent_ideas": [ "..." ],             // düz metin maddeler (Claude Code/Codex/Gemini/OpenClaw/Hermes vb.)
 
   "watchlist": [
     { "name": "...", "url": "https://...", "note": "..." }   // url/note opsiyonel
@@ -80,10 +82,15 @@ otomatik gizlenir — **uydurma içerik ekleme**.
 
 ## Sıralama ve sayı
 - `candidates`: **en iyi 4 aday** konur (3 değil). Skora göre azalan sıralanır.
-- `trending`: skora göre azalan (eşitlik bozucu: `today` azalan).
+- `trending`: **tam GitHub trending listesi** (tüm diller/türler). Sabit üst sınır yoktur;
+  skora göre azalan sıralanır (eşitlik bozucu: `today` azalan). Render kapsız basar.
 - `rank` her iki listede otomatik atanır; elle vermene gerek yok.
 
 ## Önerilen konu başlıkları (`topics[].title`)
 Agent OS / AI workflow · MCP / integrations · Coding agents · Local/self-hosted AI ·
-Content/video automation · Second brain / knowledge tools · Sales/CRM/lead automation.
+Content/video automation · Second brain / knowledge tools · Sales/CRM/lead automation ·
+**Genel teknoloji gündemi** · **Ürün / launch gündemi**.
 Sadece o gün gerçekten içerik olan başlıkları ekle.
+
+Geçerli `topics[].items[].source` değerleri (örnek): GitHub · Hacker News · Product Hunt ·
+Reddit · Google Trends · YouTube · X / Twitter · Web · Latent Space · TLDR AI.

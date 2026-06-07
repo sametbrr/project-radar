@@ -17,24 +17,51 @@ dahil değildir.
 ## Ana kaynak kategorileri
 
 ### 1. GitHub
-- **Trending:** Python, TypeScript, Go, Rust, Jupyter Notebook (`github.com/trending`).
+- **Trending:** **tüm diller/türler** — dil filtresiyle sınırlı değil.
+  `scripts/fetch_github_trending.py` ile çek. **Günlük radarda varsayılan `daily`** ("bugün
+  ivme kazanan"). `weekly`/`monthly` yavaş değiştiği için her gün çekilmez; haftalık özet
+  istendiğinde `--since weekly` (gerekirse `--since all` üçünü birleştirir). Script ham
+  `[{owner, repo, lang, stars, today, url, desc}]` yazar; skor ve Türkçe açıklama sonradan
+  agent tarafından eklenir.
 - **Arama sorguları:** agent framework · claude code · mcp server · ai automation ·
   open source ai app · llm workflow · personal ai assistant · local ai · browser agent ·
   computer use · voice agent · rag · second brain ai · obsidian ai · notebooklm
   alternative · ai crm · ai sales automation · self hosted ai
 
 ### 2. Hacker News
-AI, agents, Claude, OpenAI, MCP, local LLM, automation, self-hosted, devtools başlıkları.
+AI, agents, Claude, OpenAI, MCP, local LLM, automation, self-hosted, devtools başlıkları;
+ayrıca genel teknoloji/ürün gündemi (front page + Show HN + Launch HN).
 
 ### 3. Product Hunt / launch kaynakları
-AI app'ler, productivity, developer tools, automation, sales/content araçları.
+AI app'ler, productivity, developer tools, automation, sales/content araçları ve genel
+ürün/launch gündemi.
 
-### 4. RSS / blog / newsletter
+### 4. Reddit
+Subreddit'lerde günün öne çıkanları (top/hot) — JSON uçları curl/web_fetch ile çekilebilir
+(`https://www.reddit.com/r/<sub>/top.json?t=day`): r/programming · r/MachineLearning ·
+r/LocalLLaMA · r/selfhosted · r/SideProject · r/webdev · r/technology · r/Entrepreneur ·
+r/artificial. Hem araç/proje isimleri hem genel teknoloji gündemi için.
+
+### 5. Google (arama + Trends)
+Genel teknoloji ve ürün gündemi aramaları (`web_search`) + Google Trends'te günün
+yükselen aramaları (teknoloji/ürün odaklı süzülerek).
+
+### 6. YouTube
+Tech trending videoları + launch/kanal aramaları (yeni araç tanıtımları, demo'lar).
+
+### 7. X / Twitter
+Trending tech başlıkları + arama (auth yok; web/sonuç sayfası üzerinden). Konuşulan
+araç, proje ve gündem isimleri.
+
+### 8. Genel web
+Büyük teknoloji haberleri, ürün/startup launch'ları, sektör gündemi (`web_search`).
+
+### 9. RSS / blog / newsletter
 Latent Space · Ben's Bites · The Rundown AI · TLDR AI · Simon Willison ·
 Anthropic / OpenAI / Google DeepMind / Hugging Face blogları · MCP, agent, local LLM,
 coding-agent odaklı teknik bloglar.
 
-### 5. Sosyal / içerik
+### 10. Sosyal / kaydedilenler
 YouTube Watch Later ve post-scanner çıktıları; X / LinkedIn kaydedilenlerden çıkan
 proje ve tool isimleri.
 
@@ -45,6 +72,11 @@ alternatifi araçlar · AI video/content automation · Lead generation / sales a
 CRM + AI agent sistemleri · Telegram/Discord/Gmail otomasyonları · Local-first AI app'ler ·
 Self-hosted SaaS araçları · AI coding workflow araçları · Finans + AI / trading agent
 araçları (dikkatli risk filtresiyle).
+
+**Genel teknoloji + ürün gündemi de adaydır.** AI/LLM öne çıkan ilgi alanı olmaya devam
+eder ama tek filtre değildir: dikkat çeken yeni ürün/launch'lar, önemli teknoloji haberleri,
+güçlü açık kaynak projeler ve sektör gündemi de — pratik işe yararlık üzerinden — kapsama
+girer.
 
 ## Skorlama
 Her aday için **0–100** pratik fayda skoru üret. Kriterler:
@@ -70,7 +102,7 @@ Bu etiketler PDF'te aksiyon rozeti olarak görünür — birebir bu yazımla kul
 - `TAKIP ET` — ilginç ama hemen gerekmez.
 - `WATCHLIST'E AL` — ileride işimize yarayabilir.
 - `DETAYLI İNCELE` — README/docs daha çok okunmalı.
-- `HERMES WORKFLOW FİKRİ` — Hermes'e skill/cron/workflow olarak uyarlanabilir.
+- `WORKFLOW / AGENT FİKRİ` — Claude Code, Codex, Gemini, OpenClaw, Hermes vb. ajanlara skill/cron/workflow olarak uyarlanabilir.
 - `HYPE / REDDET` — çok ses var ama pratik fayda düşük.
 
 ## Çıktı dili ve format

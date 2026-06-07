@@ -10,9 +10,12 @@ description: >-
   repos, apps, devtools); AI/LLM tooling is prominent but NOT the only filter —
   scoring is based on real-world usefulness. Triggers: "project radar çalıştır",
   "proje radarı", "radar çalıştır", "github trending raporu", "bugün ne konuşuluyor",
-  "run the radar". Discovery-only: NEVER clones, installs, builds, or runs candidate
-  repos — it reads sources, scores usefulness 0–100, classifies actions, then renders
-  a Turkish HTML report identical to assets/report-template.html.
+  "run the radar". Also manages a persistent WATCHLIST: "<repo>'yu watchliste ekle" /
+  "add <repo> to watchlist" reads the repo's README + GitHub metadata and writes a
+  medium-depth detail report (Markdown + HTML); "watchlist'i getir" / "show watchlist"
+  lists everything with file references. Discovery-only: NEVER clones, installs, builds,
+  or runs candidate repos — it reads sources, scores usefulness 0–100, classifies actions,
+  then renders a Turkish HTML report identical to assets/report-template.html.
 ---
 
 # Project Radar
@@ -32,9 +35,21 @@ değildir.
 ## İş akışı (sırayla)
 
 1. **Kaynakları tara.** `references/sources-and-scoring.md` dosyasındaki kategori ve
-   arama sorgularını kullan. Veriyi `web_search` / `web_fetch` (ve varsa bağlı MCP
-   araçları) ile topla. GitHub Trending için `https://github.com/trending` ve dil
-   filtrelerini (Python, TypeScript, Go, Rust, Jupyter Notebook) tara.
+   arama sorgularını kullan.
+   - **Önce GitHub Trending'i çek (deterministik).** Dil/tür fark etmeksizin günün trend
+     listesini almak için scraper'ı çalıştır (günlük radarda **daily** varsayılan):
+     ```bash
+     python3 scripts/fetch_github_trending.py --out /tmp/github-trending-raw.json
+     ```
+     Bu, "bugün ivme kazanan" repoları çekip ham `[{owner, repo, lang, stars, today, url, desc}]`
+     JSON'u yazar (skor/Türkçe açıklama yok). Sen bu listedeki repoları skorlar, Türkçe
+     açıklamayı yazar ve `trending[]`'e taşırsın.
+     - **Haftalık özet istendiğinde** daily yerine `--since weekly` kullan (weekly/monthly
+       yavaş değiştiği için günlük koşuda çekilmez; istenirse `--since all` üçünü birleştirir).
+   - **Sonra diğer platformları tara** (`web_search` / `web_fetch` / curl ve varsa bağlı
+     MCP araçları): Google (arama + Trends), Reddit (subreddit top/hot), YouTube (trending +
+     arama), Hacker News, X / Twitter, genel web. Yalnızca AI/LLM değil; **genel teknoloji
+     ve ürün gündemi** de kapsama dahildir.
 2. **Skorla ve sınıflandır.** Her aday için 0–100 pratik fayda skoru ve bir aksiyon
    sınıfı üret (bkz. `references/sources-and-scoring.md`).
 3. **Filtrele.** Uzun ham liste verme. Sadece anlamlı adayları taşı; gerisini
@@ -57,7 +72,7 @@ orange (niş/temkinli). Bu eşik ve renkler tasarımda sabittir — değiştirme
 ## Rapor bölümleri (HTML)
 Sırasıyla: **Kısa sonuç** → **En iyi adaylar** (tüm kaynaklar, zengin kartlar) →
 **GitHub trending** (referans kart düzeni) → **Bugün konuşulanlar** (konu başlıkları)
-→ **Hermes workflow fikirleri** → **Watchlist** → **Hype / şüpheli / reddedilenler**.
+→ **Workflow / Agent fikirleri** → **Watchlist önerileri** → **Hype / şüpheli / reddedilenler**.
 Boş bölümler otomatik gizlenir — uydurma içerik ekleme.
 
 ## Render motoru
@@ -65,16 +80,36 @@ Boş bölümler otomatik gizlenir — uydurma içerik ekleme.
 birebir aynı, animasyonlar açık. **Font:** tek font olarak **Inter** kullanılır ve
 template'te **Google Fonts**'tan yüklenir (SIL OFL, ücretsiz, her yerde; skill'e gömülü
 font yok). Çevrimdışıyken sistem sans'ına düşer, yerleşim değişmez. PDF gerekirse
-`--out *.pdf` (headless Chromium, tek uzun sayfa). Gereksinimler: `scripts/requirements.txt`.
+`--out *.pdf`: mobil için A4 dikey, sayfalı, satır başına 2 kompakt kart düzeni (headless
+Chromium; HTML çıktısı değişmez). Gereksinimler: `scripts/requirements.txt`.
+
+## Watchlist (kalıcı)
+Günlük rapordaki **"Watchlist önerileri"** geçici öneridir. Kalıcı, curate edilmiş watchlist
+ayrıdır ve `scripts/watchlist.py` ile yönetilir. Detaylar: `references/watchlist.md`.
+- **Ekle** ("<repo>'yu watchliste ekle"): `python3 scripts/watchlist.py add <owner/repo|url>`
+  → GitHub metadata + README **okunur** (clone YOK), `reports/<slug>.raw.json` + `analysis.json`
+  stub'ı yazılır. Sen `analysis.json`'u **Orta derinlikte Türkçe** doldurursun, sonra
+  `python3 scripts/watchlist.py render <slug>` → `.md` + imza `.html` üretilir.
+- **Getir** ("watchlist'i getir"): `python3 scripts/watchlist.py list` → tüm kayıtlar
+  **dosya referanslarıyla** (md/html yolları) listelenir.
+- Klasör default `<SKILL_DIR>/watchlist` (env `PROJECT_RADAR_WATCHLIST_DIR` / `--dir` ile değişir).
 
 ## Dosya haritası
 - `references/sources-and-scoring.md` — kaynaklar, ilgi alanları, skorlama, aksiyon sınıfları.
 - `references/report-schema.md` — JSON şeması + alanların rapor bölümlerine eşlenmesi.
+- `references/watchlist.md` — kalıcı watchlist: klasör düzeni, analiz şeması, komutlar, tetikleyiciler.
 - `assets/report-template.html` — birebir tasarım (Jinja2). **Tasarımı bozma.**
-- `assets/report-data.example.json` — referans örnek veri (14 trending repo + adaylar).
+- `assets/watchlist-report-template.html` — tek-proje watchlist detay raporu (imza HTML).
+- `assets/report-data.example.json` — referans örnek veri (genişletilmiş trending + adaylar).
+- `scripts/fetch_github_trending.py` — GitHub Trending'in tam listesini çeken deterministik scraper (curl + stdlib).
+- `scripts/watchlist.py` — kalıcı watchlist yöneticisi (add / render / list / remove).
 - `scripts/build_report.py` — JSON → HTML (varsayılan) / PDF.
 
 ## Hızlı doğrulama
+GitHub scraper'ı dene (gerçek veriye karşı):
+```bash
+python3 scripts/fetch_github_trending.py --out /tmp/github-trending-raw.json
+```
 Şema değişikliği sonrası örnek veriyle render dene:
 ```bash
 python3 scripts/build_report.py --data assets/report-data.example.json --out /tmp/ornek.html

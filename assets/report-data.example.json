@@ -25,7 +25,7 @@
       "llm": "Claude Code, Codex, Gemini, Copilot ve OpenCode ile çalışır; MCP üzerinden Hermes dahil herhangi bir ajana bağlanır.",
       "adoption": "npm kurulumu, geniş ajan desteği; aktif geliştiriliyor.",
       "risks": "Bellek deposunun gizliliği ve şişmesi yönetilmeli; veri saklama politikası incelenmeli.",
-      "action": "HERMES WORKFLOW FİKRİ"
+      "action": "WORKFLOW / AGENT FİKRİ"
     },
     {
       "name": "knowledge-work-plugins", "owner": "anthropics",
@@ -83,7 +83,15 @@
     { "rank": 13, "owner": "thedotmack", "repo": "claude-mem", "lang": "TypeScript", "stars": 78691, "today": 352, "score": 80,
       "desc": "AI ajanlarına oturumlar arası kalıcı bellek kazandıran bir araç: ajanın oturum boyunca yaptıklarını yakalıyor, AI ile sıkıştırıyor ve ilgili bağlamı sonraki oturumlara geri enjekte ediyor. Böylece her seferinde sıfırdan başlama derdini ortadan kaldırıyor. Claude Code, Codex, Gemini, Copilot ve OpenCode dahil pek çok ajanla çalışıyor." },
     { "rank": 14, "owner": "st-tech", "repo": "ppf-contact-solver", "lang": "Python", "stars": 3502, "today": 170, "score": 70,
-      "desc": "ZOZO'nun (Japonya'nın en büyük moda e-ticaret şirketi) geliştirdiği, fizik tabanlı simülasyonlar için bir temas (contact) çözücüsü; kumaş/kabuk, katı cisim ve ip/halat simülasyonlarını çözüyor. GPU üzerinde tek-duyarlıkla çalışan, sonlu elemanlar yöntemi (FEM) kullanan, iç-içe geçmeleri engelleyen sağlam ve ölçeklenebilir bir motor. Blender eklentisi, Docker imajı ve hatta LLM ile doğal dilde simülasyon çalıştıran MCP desteğiyle geliyor." }
+      "desc": "ZOZO'nun (Japonya'nın en büyük moda e-ticaret şirketi) geliştirdiği, fizik tabanlı simülasyonlar için bir temas (contact) çözücüsü; kumaş/kabuk, katı cisim ve ip/halat simülasyonlarını çözüyor. GPU üzerinde tek-duyarlıkla çalışan, sonlu elemanlar yöntemi (FEM) kullanan, iç-içe geçmeleri engelleyen sağlam ve ölçeklenebilir bir motor. Blender eklentisi, Docker imajı ve hatta LLM ile doğal dilde simülasyon çalıştıran MCP desteğiyle geliyor." },
+    { "rank": 15, "owner": "zed-industries", "repo": "zed", "lang": "Rust", "stars": 61240, "today": 412, "score": 80,
+      "desc": "Rust ile yazılmış, yüksek performanslı ve çok-oyunculu (collaborative) bir kod editörü; AI asistan entegrasyonu ve düşük gecikmeli düzenleme deneyimiyle VS Code'a alternatif olmayı hedefliyor. Genel teknoloji gündeminde editör savaşlarının yeni gözdesi." },
+    { "rank": 16, "owner": "ollama", "repo": "ollama", "lang": "Go", "stars": 98210, "today": 305, "score": 85,
+      "desc": "Yerel makinede büyük dil modellerini (Llama, Mistral, Gemma vb.) tek komutla indirip çalıştırmayı sağlayan araç. Go ile yazılmış; local-first AI ve gizlilik odaklı kullanım için fiilen standart haline geldi. REST API'siyle ajan akışlarına kolayca bağlanıyor." },
+    { "rank": 17, "owner": "ghostty-org", "repo": "ghostty", "lang": "Zig", "stars": 28950, "today": 521, "score": 75,
+      "desc": "GPU hızlandırmalı, Zig ile yazılmış modern bir terminal emülatörü; hız, yerel platform entegrasyonu ve sade yapılandırmasıyla geliştirici topluluğunda hızla yayılıyor. AI/LLM dışı ama güçlü bir devtool örneği." },
+    { "rank": 18, "owner": "PostHog", "repo": "posthog", "lang": "Python", "stars": 24115, "today": 198, "score": 75,
+      "desc": "Açık kaynak, self-hosted edilebilen ürün analitiği platformu (Mixpanel/Amplitude alternatifi): event takibi, funnel, session replay ve feature flag'ları tek pakette sunuyor. Ürün gündemi tarafında öne çıkan, FinTech/SaaS ekipleri için pratik bir araç." }
   ],
 
   "topics": [
@@ -96,13 +104,23 @@
       { "text": "Agent memory / kalıcı bağlam yaklaşımları geliştirici topluluğunda gündemde.", "source": "TLDR AI" }
     ]},
     { "title": "Local / self-hosted AI", "items": [
-      { "text": "Mac Mini M4 üzerinde yerel ajan orkestrasyonu için kaynak profilleme notları paylaşılıyor.", "source": "X / kaydedilenler" }
+      { "text": "Mac Mini M4 üzerinde yerel ajan orkestrasyonu için kaynak profilleme notları paylaşılıyor.", "source": "X / kaydedilenler" },
+      { "text": "Ollama ile yerel model çalıştırma kurulumları ve donanım/kontekst penceresi karşılaştırmaları konuşuluyor.", "source": "Reddit", "url": "https://www.reddit.com/r/LocalLLaMA/" }
+    ]},
+    { "title": "Genel teknoloji gündemi", "items": [
+      { "text": "Rust tabanlı geliştirici araçları (Zed, Ghostty) editör/terminal tarafında ivme kazanıyor; performans tartışması gündemde.", "source": "Hacker News", "url": "https://news.ycombinator.com/" },
+      { "text": "Günün yükselen aramalarında yeni model lansmanları ve yerel AI kurulum rehberleri öne çıkıyor.", "source": "Google Trends" }
+    ]},
+    { "title": "Ürün / launch gündemi", "items": [
+      { "text": "Açık kaynak ürün analitiği (PostHog) ve self-hosted SaaS araçları launch listelerinde üst sıralarda.", "source": "Product Hunt" },
+      { "text": "Yeni geliştirici araçlarının demo videoları izlenme tarafında hızla yükseliyor.", "source": "YouTube" },
+      { "text": "FinTech/SaaS ekipleri için self-hosted analitik ve CRM alternatifleri tartışılıyor.", "source": "Web" }
     ]}
   ],
 
-  "hermes_ideas": [
-    "Bu radarı her gün 08:00'de cron ile çalıştırıp çıktı PDF'i Drive'a yükleyen + Discord'a özet atan bir workflow.",
-    "claude-mem benzeri kalıcı bellek katmanını Hermes'in rolling Planner/Designer pipeline'ına bağlamak.",
+  "agent_ideas": [
+    "Bu radarı her gün 08:00'de cron ile çalıştırıp çıktı PDF'i Drive'a yükleyen + Discord'a özet atan bir workflow (Claude Code / Codex / Hermes cron olarak uyarlanabilir).",
+    "claude-mem benzeri kalıcı bellek katmanını çoklu-ajan pipeline'ına (Claude Code, OpenClaw, Hermes) bağlamak.",
     "Understand-Anything'i NarPOS ve Cofiner repolarına manuel komutla çalıştırıp knowledge graph üretmek (radar dışı, ayrı adım)."
   ],
 
