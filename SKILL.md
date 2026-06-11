@@ -16,6 +16,9 @@ description: >-
   lists everything with file references. Discovery-only: NEVER clones, installs, builds,
   or runs candidate repos — it reads sources, scores usefulness 0–100, classifies actions,
   then renders a Turkish HTML report identical to assets/report-template.html.
+metadata:
+  version: "1.1.1"
+  author: sametbrr@gmail.com
 ---
 
 # Project Radar

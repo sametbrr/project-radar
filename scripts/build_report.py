@@ -18,7 +18,7 @@ Usage:
   python build_report.py --data report-data.json --out Project-Radar-2026-06-07.pdf
 """
 from __future__ import annotations
-import argparse, json, sys, shutil, subprocess
+import argparse, json, os, sys, shutil, subprocess
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
@@ -128,7 +128,8 @@ def html_to_pdf_playwright(html: str, out: Path, scale: int) -> bool:
     except Exception:
         return False
     # write HTML to a temp file so the headless browser can load it via file://
-    tmp = ASSETS / "._render.html"
+    # (PID-suffixed so concurrent renders don't overwrite each other)
+    tmp = ASSETS / f"._render-{os.getpid()}.html"
     tmp.write_text(html, encoding="utf-8")
     try:
         with sync_playwright() as p:
@@ -153,7 +154,7 @@ def html_to_pdf_playwright(html: str, out: Path, scale: int) -> bool:
 def html_to_pdf_wkhtmltopdf(html: str, out: Path) -> bool:
     if not shutil.which("wkhtmltopdf"):
         return False
-    tmp = ASSETS / "._render.html"
+    tmp = ASSETS / f"._render-{os.getpid()}.html"
     tmp.write_text(html, encoding="utf-8")
     try:
         subprocess.run(
@@ -184,7 +185,14 @@ def main() -> int:
     ap.add_argument("--scale", type=int, default=2, help="PDF device scale factor (default 2)")
     args = ap.parse_args()
 
-    data = json.loads(Path(args.data).read_text(encoding="utf-8"))
+    try:
+        data = json.loads(Path(args.data).read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"[error] data file not found: {args.data}", file=sys.stderr)
+        return 1
+    except json.JSONDecodeError as e:
+        print(f"[error] invalid JSON in {args.data}: {e}", file=sys.stderr)
+        return 1
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
 
