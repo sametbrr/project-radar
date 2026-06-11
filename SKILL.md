@@ -3,19 +3,17 @@ name: project-radar
 description: >-
   Günlük trend & topluluk keşif radarı. Use this skill whenever the user asks to
   run the "Project Radar" (or just "the radar"), produce a daily report of trending
-  and talked-about useful projects, scan "what's trending on GitHub", or summarize
-  what's being discussed across GitHub, Hacker News, Product Hunt, newsletters and
-  social — and wants the result as a standalone HTML file in the project's signature
-  design. It surfaces practically useful trending + discussed projects (open-source
-  repos, apps, devtools); AI/LLM tooling is prominent but NOT the only filter —
-  scoring is based on real-world usefulness. Triggers: "project radar çalıştır",
-  "proje radarı", "radar çalıştır", "github trending raporu", "bugün ne konuşuluyor",
-  "run the radar". Also manages a persistent WATCHLIST: "<repo>'yu watchliste ekle" /
-  "add <repo> to watchlist" reads the repo's README + GitHub metadata and writes a
-  medium-depth detail report (Markdown + HTML); "watchlist'i getir" / "show watchlist"
-  lists everything with file references. Discovery-only: NEVER clones, installs, builds,
-  or runs candidate repos — it reads sources, scores usefulness 0–100, classifies actions,
-  then renders a Turkish HTML report identical to assets/report-template.html.
+  and talked-about useful projects, scan GitHub trending, or summarize what's being
+  discussed across GitHub, Hacker News, Product Hunt, newsletters and social —
+  output is a standalone Turkish HTML report in the project's signature design.
+  Surfaces practically useful projects (open-source repos, apps, devtools); AI/LLM
+  tooling is prominent but real-world usefulness is the filter. Triggers: "project
+  radar çalıştır", "proje radarı", "radar çalıştır", "github trending raporu",
+  "bugün ne konuşuluyor", "run the radar". Also manages a persistent WATCHLIST:
+  "<repo>'yu watchliste ekle" / "add <repo> to watchlist" writes a medium-depth
+  detail report (Markdown + HTML); "watchlist'i getir" / "show watchlist" lists
+  entries with file references. Discovery-only: NEVER clones, installs, builds,
+  or runs candidate repos.
 metadata:
   version: "1.1.1"
   author: sametbrr@gmail.com

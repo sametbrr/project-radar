@@ -1,0 +1,8 @@
+{
+  "name": "project-radar",
+  "description": "Daily Turkish HTML radar report of trending and talked-about projects, with a persistent watchlist",
+  "author": { "name": "sametbrr", "email": "sametbrr@gmail.com" },
+  "repository": "https://github.com/sametbrr/project-radar",
+  "license": "MIT",
+  "keywords": ["trending", "github", "discovery", "report", "watchlist"]
+}
