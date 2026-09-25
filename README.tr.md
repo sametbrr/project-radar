@@ -47,7 +47,15 @@ Yeni bir oturum başlatın, ardından `project radar çalıştır` / `run the ra
 
 ## Kurulum
 
-Skill standart bir `SKILL.md` klasörüdür, bu yüzden formatı destekleyen her ajanda çalışır.
+Claude Code eklentisi olarak, [skill-hub](https://github.com/sametbrr/skill-hub) marketplace'inden:
+
+```bash
+claude plugin marketplace add sametbrr/skill-hub
+claude plugin install project-radar@skill-hub
+pip install jinja2 markupsafe
+```
+
+Skill aynı zamanda standart bir `SKILL.md` klasörüdür, bu yüzden formatı destekleyen her ajanda çalışır:
 
 ```bash
 # Personal (all projects) — Hermes runs on top of Claude Code, so this also

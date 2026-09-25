@@ -47,7 +47,15 @@ Start a new session, then trigger it with `project radar çalıştır` / `run th
 
 ## Installation
 
-The skill is a standard `SKILL.md` folder, so it works in any agent that supports the format.
+As a Claude Code plugin, from the [skill-hub](https://github.com/sametbrr/skill-hub) marketplace:
+
+```bash
+claude plugin marketplace add sametbrr/skill-hub
+claude plugin install project-radar@skill-hub
+pip install jinja2 markupsafe
+```
+
+The skill is also a standard `SKILL.md` folder, so it works in any agent that supports the format:
 
 ```bash
 # Personal (all projects) — Hermes runs on top of Claude Code, so this also
