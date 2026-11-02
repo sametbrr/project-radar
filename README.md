@@ -2,6 +2,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/agentskills.io-compatible-blue)](https://agentskills.io)
 
+[Quick Start](#quick-start) • [Installation](#installation) • [Usage](#usage) • [How It Works](#how-it-works) • [Troubleshooting](#troubleshooting) • [Contributing](#contributing)
+
 # Project Radar
 
 A daily trending & community discovery radar, packaged as a Claude Agent Skill — it pulls the full GitHub Trending list and scans what's discussed across Hacker News, Reddit, Product Hunt, Google, YouTube, X and the wider web, scores each candidate 0–100 on real-world usefulness, renders a single self-contained Turkish HTML report in a fixed signature design, and keeps a persistent watchlist with per-project detail reports.
@@ -24,13 +26,15 @@ Start a new session, then trigger it with `project radar çalıştır` / `run th
 
 ## Features
 
-- **Discovery-only** — never clones, installs, builds, or runs candidate repos; it reads sources, evaluates, and reports.
-- **Usefulness scoring** — scores each candidate 0–100 on real-world usefulness; AI/LLM tooling is a prominent interest but not the only filter.
-- **Full GitHub Trending** — a deterministic scraper (`fetch_github_trending.py`) pulls the entire daily Trending list across all languages, not a fixed subset; weekly/monthly on demand.
-- **Multi-source scan** — Hacker News, Reddit, Product Hunt, Google, YouTube, X and the wider web; general tech + product agenda, not only AI/LLM.
-- **Persistent watchlist** — add any GitHub repo; its README + metadata are read into a medium-depth detail report (Markdown + signature HTML) and listed back with file references.
-- **Signature HTML report** — one self-contained Turkish HTML file in a fixed design (single Inter font, animations on); PDF optional.
-- **Agent-agnostic** — a standard `SKILL.md` folder that works in any agentskills.io-compatible tool.
+| | |
+|---|---|
+| **Discovery-only** | Never clones, installs, builds, or runs candidate repos; it reads sources, evaluates, and reports |
+| **Usefulness scoring** | Scores each candidate 0–100 on real-world usefulness; AI/LLM tooling is a prominent interest but not the only filter |
+| **Full GitHub Trending** | A deterministic scraper (`fetch_github_trending.py`) pulls the entire daily Trending list across all languages, not a fixed subset; weekly/monthly on demand |
+| **Multi-source scan** | Hacker News, Reddit, Product Hunt, Google, YouTube, X and the wider web; general tech + product agenda, not only AI/LLM |
+| **Persistent watchlist** | Add any GitHub repo; its README + metadata are read into a medium-depth detail report (Markdown + signature HTML) and listed back with file references |
+| **Signature HTML report** | One self-contained Turkish HTML file in a fixed design (single Inter font, animations on); PDF optional |
+| **Agent-agnostic** | A standard `SKILL.md` folder that works in any agentskills.io-compatible tool |
 
 ---
 
@@ -78,7 +82,23 @@ Start a new session and run `/skills` to confirm it loaded.
 
 ## Usage
 
-Render the bundled example to verify everything works, then use the helper scripts directly.
+```text
+> run the radar                  # daily report: full GitHub Trending + community scan → HTML
+> project radar çalıştır         # same, Turkish trigger
+> github trending raporu         # report focused on GitHub Trending
+> bugün ne konuşuluyor           # what's being discussed today
+> add owner/repo to watchlist    # medium-depth detail report (Markdown + HTML)
+> owner/repo'yu watchliste ekle  # same, Turkish trigger
+> show watchlist                 # list watchlist entries with file references
+> watchlist'i getir              # same, Turkish trigger
+/project-radar                   # invoke directly (plugin install: /project-radar:project-radar)
+```
+
+Ask for a weekly summary and the radar pulls the weekly Trending list instead of the daily one.
+
+### Helper scripts
+
+Render the bundled example to check the setup, or run the scripts the skill uses directly:
 
 ```bash
 # Render the bundled example:
@@ -146,6 +166,25 @@ project-radar/
 
 ---
 
+## Troubleshooting
+
+**Watchlist `add` stops with `GitHub: API rate limit exceeded` or `metadata çekilemedi`** — the unauthenticated GitHub API allows 60 requests per hour. Install the `gh` CLI and run `gh auth login`; the watchlist uses it automatically when it is on `PATH`.
+
+**A `.pdf` output path gives an HTML file and `No PDF engine available`** — install the PDF engine: `pip install playwright && playwright install chromium`. `wkhtmltopdf` on `PATH` also works as a fallback.
+
+**The Trending scraper prints `curl başarısız`** — curl could not reach GitHub (network, proxy or timeout); the script retries with Python `urllib` on its own. If that fails too, check that `https://github.com/trending` opens from the same machine.
+
+---
+
+## Contributing
+
+- Questions and ideas: [Discussions](https://github.com/sametbrr/project-radar/discussions)
+- Bugs: [issue tracker](https://github.com/sametbrr/project-radar/issues)
+- Pull requests: read the [contribution guide](https://github.com/sametbrr/.github/blob/main/CONTRIBUTING.md) first
+- Security reports: follow the [security policy](https://github.com/sametbrr/project-radar/security/policy), not a public issue
+
+---
+
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). Third-party notes (the Inter font) are in [NOTICE](NOTICE).

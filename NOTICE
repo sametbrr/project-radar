@@ -1,0 +1,10 @@
+Project Radar
+Copyright (c) 2026 Samet Birer
+
+The MIT license in LICENSE covers this project's own code and templates only.
+
+Third-party font
+----------------
+The report templates load a single font, Inter, from Google Fonts at view time.
+Inter is licensed under the SIL Open Font License 1.1
+(https://openfontlicense.org). No font files are bundled in this repository.
