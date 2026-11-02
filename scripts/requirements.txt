@@ -1,6 +1,6 @@
 # Project Radar render bağımlılıkları
-jinja2>=3.1
-markupsafe>=2.1
+jinja2>=3.1.6
+markupsafe>=3.0.4
 
 # Varsayılan çıktı HTML'dir ve yalnızca yukarıdaki iki paketi gerektirir.
 
