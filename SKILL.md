@@ -15,7 +15,7 @@ description: >-
   entries with file references. Discovery-only: NEVER clones, installs, builds,
   or runs candidate repos.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
   author: sametbrr@gmail.com
 ---
 
